@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+{% csrf_token %}
+<html>
+
+    <head>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkbox AJAX Example</title>
+        <style>
+            /* The switch - the box around the slider */
+
+@font-face {
+  font-family: "Klavika-medium";
+  src: url('https://yifi.pro/fonts//Klavika-Medium.otf') format('opentype');
+}
+p {
+  font-size: 20px;
+  font-family: "Klavika-medium", Klavika-medium;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  vertical-align: middle; /* Ensure alignment with text */
+}
+html, body {
+            height: 80%;
+            margin: 0;
+            display: flex;
+            justify-content: center; /* Center container horizontally */
+            align-items: center; /* Center container vertically */
+        }
+        .container {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            align-items: flex-start; /* Align items horizontally to the start */
+        }
+        .item {
+            display: flex; /* Align checkbox and text side by side */
+            align-items: center; /* Center items vertically */
+            margin: 10px 0; /* Spacing between items */
+        }
+header {
+    position: absolute;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ff0000;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #11ce40;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #f32121;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+input:disabled + .slider{
+  background-color: #3f3e41;
+}
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.switch-label {
+            display: inline-block;
+            font-family: "Klavika-medium", Klavika-medium;
+            margin-right: 10px; /* Space between the checkbox and the label text */
+            vertical-align: middle; /* Ensure alignment with the switch */
+            font-size:20px
+}
+button[type=submit] {
+            background-color: #ff6200;
+            font-family: "Klavika-medium", Klavika-medium;
+            padding: 8px;
+            border-width: 0;
+            color: white;
+            width: 200px }
+        </style>
+    </head>
+
+
+    <body style="background-color:#a6a7a9;">
+        
+            
+      
+      <form id="checkboxForm" method="post" action="{% url 'updateCheckbox' %}">
+        {% csrf_token %}
+        <div class="container">
+        {% for wlanName, name , form in forms %}
+        <div class="item">
+            
+              <span class="switch-label">{{ name }}</span>
+                <label class="switch">
+                    <input type="checkbox"  name="{{ wlanName }}" id="{{ wlanName }}"  {% if form.instance.isChecked %}checked {% elif not form.instance.isChecked%} {% else %} disabled {% endif %}>
+                    <span class="slider round"></span>
+                </label>
+                
+            </div>
+            <br>
+            <br>
+        {% endfor %}
+    </form>
+    <form method="post" action="{% url 'page' %}">
+      <div class="center-block">
+      {% csrf_token %}
+      <button type="submit">Sign Out</button>
+      </div>
+  </form>
+</div>
+          
+          <script>
+            $(document).ready(function(){
+                $('input[type="checkbox"]').on('change', function(){
+                    var checkbox = $(this);
+                    var isChecked = checkbox.is(':checked');
+                    var checkboxID = checkbox.attr('name');
+    
+                    $.ajax({
+                        type: 'POST',
+                        url: "{% url 'updateCheckbox' %}",
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'checkboxID': checkboxID,
+                            'isChecked': isChecked
+                        },
+                        success: function(response) {
+                            if(response.success) {
+                                console.log('Checkbox state updated to:', response.is_checked);
+                            } else {
+                                console.log('Failed to update checkbox state.');
+                            }
+                        },
+                        error: function() {
+                            console.log('An error occurred.');
+                        }
+                    });
+                });
+            });
+        </script>
+                
+            
+              
+
+                
+            
+              
+            
+    </body>
+</html>
+    

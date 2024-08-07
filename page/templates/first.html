@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<body style="background-color:#716b6b;">
+<head>
+    <style>
+        @font-face {
+  font-family: "Klavika-medium";
+  src: url('https://yifi.pro/fonts//Klavika-Medium.otf') format('opentype');
+}
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            
+        }
+        input {
+            padding: 8px;
+            margin-bottom: 16px;
+            width: 276px
+        }
+        input[type=submit] {
+            background-color: #ff6200;
+            
+            padding: 8px;
+            border-width: 0;
+            color: white;
+            width: 296px 
+        }
+        input[type=submit]:hover{
+            background-color:#db4433;
+
+        }
+        label{
+            font-family: "Klavika-medium", Klavika-medium;
+        }
+    </style>
+</head>
+<body>
+
+    
+
+<!-- <form action="/page/" method ="post"> 
+    
+    <input type="text" 
+               id="usernametext" 
+               name="usernametext" 
+               placeholder="Enter username" required> 
+    
+    
+    <input type="text" 
+               id="passwordtext" 
+               name="passwordtext" 
+               placeholder="Enter password" required>
+               <input type="button" value="Sign in">
+               <a href='subwayStation/'><button type="button">Sign in</button></a> 
+</form>-->
+<form action="" method = "post"> 
+    {% csrf_token %}
+    {{ form.as_p }}
+    <label for="username">Username: </label>
+    <input id="username" type="text" name="username">
+    
+
+    <label for="password">Password: </label>
+    <input id="password" type="password" name="password">
+    <input type="submit" value="Sign in">
+
+</form>
+
+</body>
+</html>

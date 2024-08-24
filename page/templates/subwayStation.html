@@ -6,7 +6,7 @@
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkbox AJAX Example</title>
+    <title>Toggles</title>
         <style>
             /* The switch - the box around the slider */
 
@@ -19,7 +19,8 @@ p {
   font-family: "Klavika-medium", Klavika-medium;
 }
 .switch {
-  position: relative;
+  position: absolute;
+  right: 40px;
   display: inline-block;
   width: 60px;
   height: 34px;
@@ -44,6 +45,16 @@ html, body {
         }
 header {
     position: absolute;
+}
+
+.mydiv {
+    position: absolute;
+top: 25%;
+left: 50%;
+margin-top: -50px;
+margin-left: -50px;
+width: 250px;
+height: 450px;
 }
 
 /* Hide default HTML checkbox */
@@ -126,7 +137,7 @@ button[type=submit]:hover{
 
     <body style="background-color:#a6a7a9;">
         
-            
+      <div class="mydiv">      
       
       <form id="checkboxForm" method="post" action="{% url 'updateCheckbox' %}">
         {% csrf_token %}
@@ -151,8 +162,8 @@ button[type=submit]:hover{
       <button type="submit">Sign Out</button>
       </div>
   </form>
-</div>
-          
+   </div>
+    </div>         
           <script>
             $(document).ready(function(){
                 $('input[type="checkbox"]').on('change', function(){
@@ -192,4 +203,3 @@ button[type=submit]:hover{
             
     </body>
 </html>
-    

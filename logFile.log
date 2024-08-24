@@ -1,13 +1,10 @@
-2024-08-06 20:15:15,010 - myLogger - DEBUG - aaaa
+kj2024-08-06 20:15:15,010 - myLogger - DEBUG - aaaa
 2024-08-06 20:16:03,346 - myLogger - DEBUG - aaaa
 2024-08-06 20:33:26,302 - myLogger - DEBUG - User: AllanB logged in
 2024-08-06 20:33:26,357 - myLogger - DEBUG - aaaa
-2024-08-07 14:54:55,930 - myLogger - DEBUG - aaaa
-2024-08-07 14:54:57,165 - myLogger - DEBUG - aaaa
-2024-08-08 01:07:20,606 - myLogger - DEBUG - User: Admin logged in
-2024-08-08 01:07:20,634 - myLogger - DEBUG - aaaa
-2024-08-08 01:11:09,800 - myLogger - DEBUG - User: Admin logged in
-2024-08-08 01:11:09,866 - myLogger - DEBUG - aaaa
-2024-08-08 01:11:27,985 - myLogger - DEBUG - aaaa
-2024-08-08 01:11:50,716 - myLogger - DEBUG - aaaa
-2024-08-08 01:12:16,672 - myLogger - DEBUG - aaaa
+2024-08-24 21:48:39,971 - myLogger - DEBUG - User: Admin logged in
+2024-08-24 21:48:39,986 - myLogger - DEBUG - aaaa
+2024-08-24 23:23:04,054 - myLogger - DEBUG - User: david.brown@spt.co.uk logged in
+2024-08-24 23:23:04,070 - myLogger - DEBUG - aaaa
+2024-08-24 23:23:17,535 - myLogger - DEBUG - User: david.brown@spt.co.uk logged in
+2024-08-24 23:23:17,550 - myLogger - DEBUG - aaaa

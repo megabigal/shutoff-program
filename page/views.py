@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 
 from django.template import loader
 from .models import checkboxModel
-from .forms import usernameForm
+from .forms import usernameForm, loginForm
 from .forms import toggleForm
 from .project import getToken, getWLANData, updateWLANData
 
@@ -12,14 +12,24 @@ from django.contrib.auth.decorators import login_required
 
 import logging
 import logging.handlers
+from django.core.mail import send_mail
 
-
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
+import os
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
+from django.contrib.auth.views import PasswordResetCompleteView
 
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'registration/password_reset_complete.html'
 
 logger = logging.getLogger('myLogger')
 logger.setLevel(logging.DEBUG)
@@ -40,7 +50,7 @@ def m(request):
 
     template = loader.get_template('first.html')
     
-    form =usernameForm(request.POST)
+    form =loginForm(request.POST)
     
     if form.is_valid():
         username = form.cleaned_data['username']
@@ -52,12 +62,24 @@ def m(request):
             #return redirect('home')  # Redirect to a success page.
 
             logger.debug(f'User: {username} logged in')
-            return HttpResponseRedirect("/subwayStation/")
+            u = request.user.profile
+            if u.firstTimeLogin:
+                
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
+                u.firstTimeLogin = False
+                u.save()
+                # Redirect to the password reset confirmation page
+                resetUrl = reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
+                return redirect(resetUrl)
+            else:
+
+                return HttpResponseRedirect("/subwayStation/")
         else:
             # Return an 'invalid login' error message.
             form.add_error(None, 'Invalid username or password')
     else:
-        form = usernameForm()
+        form =loginForm()
     
     
 
@@ -69,19 +91,24 @@ def index(request):
     logger = logging.getLogger('myLogger')
     logger.addHandler(fileHandler)
 
-    logger.debug('aaaa')
+    
 
 
 
     token = getToken()
     u = request.user.profile
+    user = request.user
+    if user.is_superuser:
+        isAdmin = True
+    else:
+        isAdmin = False
     wlanNames = []
     if u.subwayAccount:
         wlanNames += [i.wlanName for i in checkboxModel.objects.all() if i.isSubwayWlan ]
     if u.busAccount:
         wlanNames += [i.wlanName for i in checkboxModel.objects.all() if not i.isSubwayWlan ]
     
-    print(wlanNames)
+    
     for name in wlanNames:
          checkboxModel.objects.get_or_create(wlanName=name)
 
@@ -116,13 +143,14 @@ def index(request):
         try :
             checkboxInstance.isChecked = not getWLANData(wlanName+"_Open",token).json()['data'][0]['basic']['shutdown']
         except:
-                print(name)
+                pass
                 
         
         checkboxInstance.save()
         forms.append((wlanName,name, toggleForm(instance=checkboxInstance)))
     context = {
         'forms': forms,
+        'admin': isAdmin
     }
 
     
@@ -159,6 +187,30 @@ def updateCheckbox(request):
             print("aa")
         
     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+
+def logView(request):
+    
+    logFilePath =   os.path.join('logs', 'logFile.log')
+    try:
+        with open('logFile.log', 'r') as file:
+            logContent = file.read()
+    except IOError:
+        
+        logContent = "Log file not found."
+
+    context = {
+        'logContent': logContent,
+    }
+    return render(request, 'logPage.html', context)
+
+
+
+
+
+
+    
+
 
 
 

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        
+        <pre>{{ logContent }}</pre>
+        <form method="post" action="{% url 'page' %}">
+            <div class="center-block">
+            {% csrf_token %}
+            <button type="submit">Sign Out</button>
+            
+            </div>
+        </form>
+    </body>
+</html>

@@ -14,6 +14,7 @@ class profile(models.Model):
      user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
      subwayAccount = models.BooleanField(default=True)
      busAccount = models.BooleanField(default=True)
+     firstTimeLogin = models.BooleanField(default=True)
      def __str__(self):
         return f"{self.user.username}"
 

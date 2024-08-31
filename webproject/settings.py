@@ -27,6 +27,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'false') == 'True'
+DEBUG = 'True'
 
 ALLOWED_HOSTS = ['127.0.0.1','shutdown.yifi.pro']
 
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'webproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,3 +128,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email Backend Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'in-v3.mailjet.com'  # Server address
+EMAIL_PORT = 587  # TLS typically uses port 587
+EMAIL_USE_TLS = True  # Using TLS as specified
+EMAIL_HOST_USER = 'a5d969582ebae3b1681f297dbf9da37c'  # Username
+EMAIL_HOST_PASSWORD = '4f71b10c02ebf30e0964180c18e833f5'  # Replace with your actual password
+DEFAULT_FROM_EMAIL = 'shutdown@notifymail.net'  # Originator email

@@ -160,8 +160,19 @@ button[type=submit]:hover{
       <div class="center-block">
       {% csrf_token %}
       <button type="submit">Sign Out</button>
+      
       </div>
+      
+      
   </form>
+  <form method="post" action="{% url 'logPage' %}">
+  {% if admin %}
+      <br>
+      <br>
+      {% csrf_token %}
+      <button type="submit">View log</button>
+      {% endif %}
+</form>
    </div>
     </div>         
           <script>
